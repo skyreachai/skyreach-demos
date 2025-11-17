@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pérdidas — SKY REACH AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px 20px;
+            color: #111827;
+        }
+        
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 208, 132, 0.15);
+            overflow: hidden;
+            border: 2px solid #00D084;
+        }
+        
+        .calculator-header {
+            background: linear-gradient(135deg, #00D084 0%, #059669 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+        
+        .calculator-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .calculator-header .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .calculator-header p {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .calculator-content {
+            padding: 48px 40px;
+        }
+        
+        .question-section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #065F46;
+            margin-bottom: 24px;
+            display: block;
+        }
+        
+        .slider-container {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid rgba(0, 208, 132, 0.2);
+        }
+        
+        .slider-value {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .slider-value-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: #00D084;
+            line-height: 1;
+            text-shadow: 0 2px 4px rgba(0, 208, 132, 0.2);
+        }
+        
+        .slider-value-label {
+            font-size: 16px;
+            color: #6B7280;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .slider-wrapper {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #00D084 0%, #00D084 33%, #E5E7EB 33%, #E5E7EB 100%);
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00D084 0%, #059669 100%);
+            border: 4px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 208, 132, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 208, 132, 0.6);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00D084 0%, #059669 100%);
+            border: 4px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 208, 132, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 208, 132, 0.6);
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #9CA3AF;
+            font-weight: 600;
+        }
+        
+        .calculation-breakdown {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid rgba(0, 208, 132, 0.2);
+        }
+        
+        .calc-step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #F3F4F6;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .calc-step:last-child {
+            border-bottom: none;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .calc-step-label {
+            font-size: 15px;
+            color: #4B5563;
+            flex: 1;
+        }
+        
+        .calc-step-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .calc-step.highlight {
+            background: #FEF3C7;
+            margin: 0 -16px;
+            padding: 20px 16px;
+            border-radius: 12px;
+            border: none;
+        }
+        
+        .calc-step.highlight .calc-step-label {
+            color: #92400E;
+            font-weight: 600;
+        }
+        
+        .calc-step.highlight .calc-step-value {
+            color: #92400E;
+        }
+        
+        .total-loss {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .total-loss::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .total-loss-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .total-loss-amount {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: countUp 1s ease-out;
+        }
+        
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .total-loss-sublabel {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 20px 32px;
+            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(30, 64, 175, 0.4);
+        }
+        
+        .cta-button:active {
+            transform: translateY(0);
+        }
+        
+        .disclaimer {
+            text-align: center;
+            font-size: 13px;
+            color: #6B7280;
+            margin-top: 24px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 640px) {
+            .calculator-header h1 {
+                font-size: 24px;
+            }
+            
+            .calculator-content {
+                padding: 32px 24px;
+            }
+            
+            .slider-value-number {
+                font-size: 48px;
+            }
+            
+            .total-loss-amount {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <span class="icon">🧮</span>
+            <h1>Calculadora de Pérdidas en Tiempo Real</h1>
+            <p>Descubre cuánto dinero está perdiendo tu clínica cada año</p>
+        </div>
+        
+        <div class="calculator-content">
+            <div class="question-section">
+                <label class="question-label">
+                    ¿Cuántas llamadas recibes al día aproximadamente?
+                </label>
+                
+                <div class="slider-container">
+                    <div class="slider-value">
+                        <div class="slider-value-number" id="callsDisplay">50</div>
+                        <div class="slider-value-label">llamadas al día</div>
+                    </div>
+                    
+                    <div class="slider-wrapper">
+                        <input 
+                            type="range" 
+                            id="callsSlider" 
+                            min="10" 
+                            max="150" 
+                            value="50" 
+                            step="5"
+                        >
+                        <div class="slider-labels">
+                            <span>10</span>
+                            <span>80</span>
+                            <span>150+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculation-breakdown">
+                <div class="calc-step">
+                    <div class="calc-step-label">📞 Llamadas perdidas al día (35% promedio nacional)</div>
+                    <div class="calc-step-value" id="lostCallsDay">17</div>
+                </div>
+                
+                <div class="calc-step">
+                    <div class="calc-step-label">❌ Pacientes que nunca regresan (75%)</div>
+                    <div class="calc-step-value" id="lostPatientsDay">13</div>
+                </div>
+                
+                <div class="calc-step highlight">
+                    <div class="calc-step-label">💰 Valor promedio por paciente</div>
+                    <div class="calc-step-value">$350,000 COP</div>
+                </div>
+                
+                <div class="calc-step">
+                    <div class="calc-step-label">📅 Días laborales al mes</div>
+                    <div class="calc-step-value">20 días</div>
+                </div>
+                
+                <div class="calc-step">
+                    <div class="calc-step-label">📊 Pérdida mensual estimada</div>
+                    <div class="calc-step-value" id="monthlyLoss">$7.58M</div>
+                </div>
+            </div>
+            
+            <div class="total-loss">
+                <div class="total-loss-label">💸 Estás perdiendo</div>
+                <div class="total-loss-amount" id="annualLoss">$91M</div>
+                <div class="total-loss-sublabel">millones de pesos colombianos al año</div>
+            </div>
+            
+            <a href="#agendar" class="cta-button">
+                🚀 Agendar Auditoría Gratuita — Recupera Estos Millones →
+            </a>
+            
+            <p class="disclaimer">
+                *Cálculo basado en promedios de la industria dental en Colombia. Los resultados reales pueden variar.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Referencias a elementos del DOM
+        const slider = document.getElementById('callsSlider');
+        const callsDisplay = document.getElementById('callsDisplay');
+        const lostCallsDay = document.getElementById('lostCallsDay');
+        const lostPatientsDay = document.getElementById('lostPatientsDay');
+        const monthlyLoss = document.getElementById('monthlyLoss');
+        const annualLoss = document.getElementById('annualLoss');
+        
+        // Constantes de cálculo
+        const LOSS_RATE = 0.35; // 35% de llamadas perdidas
+        const NO_RETURN_RATE = 0.75; // 75% nunca regresan
+        const AVG_VALUE = 350000; // $350,000 COP por paciente
+        const WORKING_DAYS = 20; // Días laborales al mes
+        const MONTHS = 12; // Meses al año
+        
+        // Función para formatear números con separadores de miles
+        function formatNumber(num) {
+            return num.toLocaleString('es-CO');
+        }
+        
+        // Función para formatear moneda
+        function formatCurrency(num) {
+            if (num >= 1000000) {
+                return '$' + (num / 1000000).toFixed(2) + 'M';
+            }
+            return '$' + formatNumber(num);
+        }
+        
+        // Función para actualizar el gradiente del slider
+        function updateSliderGradient(value) {
+            const percentage = ((value - 10) / (150 - 10)) * 100;
+            slider.style.background = `linear-gradient(to right, #00D084 0%, #00D084 ${percentage}%, #E5E7EB ${percentage}%, #E5E7EB 100%)`;
+        }
+        
+        // Función principal de cálculo
+        function calculateLoss(dailyCalls) {
+            // Llamadas perdidas al día
+            const lostCalls = Math.round(dailyCalls * LOSS_RATE);
+            
+            // Pacientes perdidos al día (los que nunca regresan)
+            const lostPatients = Math.round(lostCalls * NO_RETURN_RATE);
+            
+            // Pérdida mensual
+            const monthlyLossValue = lostPatients * AVG_VALUE * WORKING_DAYS;
+            
+            // Pérdida anual
+            const annualLossValue = monthlyLossValue * MONTHS;
+            
+            return {
+                lostCalls,
+                lostPatients,
+                monthlyLossValue,
+                annualLossValue
+            };
+        }
+        
+        // Función para actualizar la UI con animación
+        function updateCalculations() {
+            const dailyCalls = parseInt(slider.value);
+            const results = calculateLoss(dailyCalls);
+            
+            // Actualizar valores con animación
+            callsDisplay.textContent = dailyCalls;
+            lostCallsDay.textContent = results.lostCalls + ' llamadas';
+            lostPatientsDay.textContent = results.lostPatients + ' pacientes';
+            monthlyLoss.textContent = formatCurrency(results.monthlyLossValue) + ' COP';
+            annualLoss.textContent = formatCurrency(results.annualLossValue);
+            
+            // Actualizar gradiente del slider
+            updateSliderGradient(dailyCalls);
+            
+            // Trigger animation
+            annualLoss.style.animation = 'none';
+            setTimeout(() => {
+                annualLoss.style.animation = 'countUp 0.5s ease-out';
+            }, 10);
+        }
+        
+        // Event listener para el slider
+        slider.addEventListener('input', updateCalculations);
+        
+        // Inicializar cálculos
+        updateCalculations();
+        
+        // Smooth scroll para el CTA
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Aquí puedes agregar tu lógica de navegación o modal
+            alert('¡Excelente decisión! Redirigiendo al formulario de auditoría...');
+            // window.location.href = 'tu-url-de-agendamiento';
+        });
+    </script>
+</body>
+</html>
