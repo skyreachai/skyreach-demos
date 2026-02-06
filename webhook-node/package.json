@@ -1,0 +1,14 @@
+{
+  "name": "kommo-chat-sender",
+  "version": "1.0.0",
+  "description": "Node.js service for sending WhatsApp messages via Kommo Chats API - replaces Salesbot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "uuid": "^11.0.0"
+  }
+}
